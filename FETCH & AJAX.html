@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>   
+ 
+ <style>
+     
+ #table1 {
+     width: 100%;
+     border: 2px solid blue;
+     font-family: Arial, Helvetica, sans-serif;
+     font-size: 20px;
+ }
+ 
+ 
+ </style>
+</head>
+<body>
+    <input type="text" id="name">
+    <button onclick="getData()">GET DATA</button>
+
+<table id="table1">
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>FOLLOWERS</th>
+        <th>TYPE</th>
+    </tr>
+    <!-- <tbody id="tBody"></tbody> -->
+</table>
+
+   <script>
+    //  USING AJAX:
+     function getData() { 
+     const a = 'https://api.github.com/users/';
+     const b = document.getElementById("name").value;
+     const url = (a + b);
+     console.log(url);
+         
+         $.ajax({
+             url: url,
+             type: "Get",
+             success: function(data) {
+                  console.log(data);
+                  const parent = document.getElementById("table1");
+
+                  const row = document.createElement("tr");
+                  const td1 = document.createElement("td");
+                  const td2 = document.createElement("td");
+                  const td3 = document.createElement("td");
+                  const td4 = document.createElement("td");
+
+                  const text1 = document.createTextNode(data.id);
+                  const text2 = document.createTextNode(data.login);
+                  const text3 = document.createTextNode(data.followers);
+                  const text4 = document.createTextNode(data.type);
+
+              td1.appendChild(text1);
+              td2.appendChild(text2);
+              td3.appendChild(text3);
+              td4.appendChild(text4);
+
+
+              row.appendChild(td1);
+              row.appendChild(td2);
+              row.appendChild(td3);
+              row.appendChild(td4);
+
+              parent.appendChild(row);
+                    },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }  
+
+
+// USING FETCH:
+/* function getData() {
+var a = 'https://api.github.com/users/';
+var b = document.getElementById("name").value;
+
+var url = a+b;
+const options = {
+    method: 'Get',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+};
+fetch(url, options) 
+.then(function(response){
+    console.log(response);
+
+    if(response.status === 200) {
+        // console.log(response.json());
+        return response.json()
+    }
+    throw response
+})
+.then(function(json){
+    console.log("json: " + json);
+
+var table = document.getElementById("table1").innerHTML += `
+  <tr>
+    <td>${json.id}</td>
+    <td>${json.name}</td>
+    <td>${json.followers}</td>
+    <td>${json.type}</td>
+  </tr>
+`
+})
+.catch(function(error){
+    console.log(error);
+})
+}*/
+    </script>
+</body>
+</html>
